@@ -24,6 +24,14 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
@@ -37,5 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation "com.squareup.retrofit2:retrofit:2.5.0"
+    implementation "com.squareup.retrofit2:converter-scalars:2.5.0"
 
 }
