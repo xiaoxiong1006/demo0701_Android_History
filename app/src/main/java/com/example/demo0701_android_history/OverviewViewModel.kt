@@ -26,13 +26,17 @@ class OverviewViewModel : ViewModel() {
     private fun getAndroidHistory() {
        // _response.value = "在这里设置API！"
         HistoryApi.retrofitService.getProperties().enqueue(
-            object: Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
+            //object: Callback<String> {
+            object: Callback<List<AndroidHistoryData>> {
+                //override fun onFailure(call: Call<String>, t: Throwable) {
+                override fun onFailure(call: Call<List<AndroidHistoryData>>, t: Throwable) {
                     _response.value = "失败: " + t.message
                 }
 
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    _response.value = response.body()
+                //override fun onResponse(call: Call<String>, response: Response<String>) {
+                override fun onResponse(call: Call<List<AndroidHistoryData>>, response: Response<List<AndroidHistoryData>>) {
+                    //_response.value = response.body()
+                    _response.value = "成功：检测到 Android 历史版本属性个数为：${response.body()?.size}"
                 }
             })
     }
