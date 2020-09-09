@@ -26,9 +26,10 @@ private val retrofit = Retrofit.Builder()
 
 interface HistoryApiService {
     @GET("/static/mock/android_v.json")
-    fun getProperties():
+    suspend fun getProperties():
             //Call<String>
-            Call<List<AndroidHistoryData>>
+            //Call<List<AndroidHistoryData>>
+            List<AndroidHistoryData>
 }
 
 object HistoryApi {

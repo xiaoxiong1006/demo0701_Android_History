@@ -3,9 +3,9 @@ package com.example.demo0701_android_history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class OverviewViewModel : ViewModel() {
 
@@ -24,20 +24,13 @@ class OverviewViewModel : ViewModel() {
     }
 
     private fun getAndroidHistory() {
-       // _response.value = "在这里设置API！"
-        HistoryApi.retrofitService.getProperties().enqueue(
-            //object: Callback<String> {
-            object: Callback<List<AndroidHistoryData>> {
-                //override fun onFailure(call: Call<String>, t: Throwable) {
-                override fun onFailure(call: Call<List<AndroidHistoryData>>, t: Throwable) {
-                    _response.value = "失败: " + t.message
-                }
-
-                //override fun onResponse(call: Call<String>, response: Response<String>) {
-                override fun onResponse(call: Call<List<AndroidHistoryData>>, response: Response<List<AndroidHistoryData>>) {
-                    //_response.value = response.body()
-                    _response.value = "成功：检测到 Android 历史版本属性个数为：${response.body()?.size}"
-                }
-            })
+      viewModelScope.launch {
+          try {
+              val listResult = HistoryApi.retrofitService.getProperties()
+              _response.value = "成功:检测到 Android 历史版本属性个数为： ${listResult.size}"
+          }catch (e:Exception){
+              _response.value = "失败: ${e.message}"
+          }
+      }
     }
 }
