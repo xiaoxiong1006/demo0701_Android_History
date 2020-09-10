@@ -7,20 +7,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+enum class AndroidApiStatus { LOADING, ERROR, DONE }
+
 class OverviewViewModel : ViewModel() {
 
-    // 存储最新的response，泛型中的参数类型为String
-    private val _response = MutableLiveData<String>()
+    private val _status = MutableLiveData<AndroidApiStatus>()
 
-    // 存放response（String）的LiveData（immutable类型）
-    val response: LiveData<String>
-        get() = _response
+    val status: LiveData<AndroidApiStatus>
+       get() = _status
 
-    //private val _property = MutableLiveData<AndroidHistoryData>()
     private val _properties = MutableLiveData<List<AndroidHistoryData>>()
 
-    //val property: LiveData<AndroidHistoryData>
-    //   get() = _property
     val properties: LiveData<List<AndroidHistoryData>>
         get() = _properties
 
@@ -34,14 +31,15 @@ class OverviewViewModel : ViewModel() {
     private fun getAndroidHistory() {
       viewModelScope.launch {
           try {
+              _status.value = AndroidApiStatus.LOADING
               val listResult = HistoryApi.retrofitService.getProperties()
-              _response.value = "成功:检测到 Android 历史版本属性个数为： ${listResult.size}"
+              _status.value = AndroidApiStatus.DONE
               if (listResult.isNotEmpty()) {
-                 // _property.value = listResult[0]
                   _properties.value = listResult
               }
           }catch (e:Exception){
-              _response.value = "失败: ${e.message}"
+              _status.value = AndroidApiStatus.ERROR
+              _properties.value = ArrayList()
           }
       }
     }

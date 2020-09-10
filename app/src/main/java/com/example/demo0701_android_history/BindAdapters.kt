@@ -1,5 +1,6 @@
 package com.example.demo0701_android_history
 
+import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -26,4 +27,22 @@ fun bindRecyclerView(recyclerView: RecyclerView,
                      data: List<AndroidHistoryData>?) {
     val adapter = recyclerView.adapter as PhotoGridAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("AndroidApiStatus")
+fun bindStatus(statusImageView: ImageView,
+               status: AndroidApiStatus?) {
+    when (status) {
+        AndroidApiStatus.LOADING -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.loading_animation)
+        }
+        AndroidApiStatus.ERROR -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.ic_connection_errror)
+        }
+        AndroidApiStatus.DONE -> {
+            statusImageView.visibility = View.GONE
+        }
+    }
 }
