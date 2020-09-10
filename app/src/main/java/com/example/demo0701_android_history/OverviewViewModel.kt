@@ -16,11 +16,13 @@ class OverviewViewModel : ViewModel() {
     val response: LiveData<String>
         get() = _response
 
-    private val _property = MutableLiveData<AndroidHistoryData>()
+    //private val _property = MutableLiveData<AndroidHistoryData>()
+    private val _properties = MutableLiveData<List<AndroidHistoryData>>()
 
-    val property: LiveData<AndroidHistoryData>
-        get() = _property
-
+    //val property: LiveData<AndroidHistoryData>
+    //   get() = _property
+    val properties: LiveData<List<AndroidHistoryData>>
+        get() = _properties
 
     /**
      *  在init中调用getAndroidHistory(),可以立即显示Response
@@ -35,7 +37,8 @@ class OverviewViewModel : ViewModel() {
               val listResult = HistoryApi.retrofitService.getProperties()
               _response.value = "成功:检测到 Android 历史版本属性个数为： ${listResult.size}"
               if (listResult.isNotEmpty()) {
-                  _property.value = listResult[0]
+                 // _property.value = listResult[0]
+                  _properties.value = listResult
               }
           }catch (e:Exception){
               _response.value = "失败: ${e.message}"
